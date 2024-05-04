@@ -1,0 +1,478 @@
+{
+  "1": {
+    "inputs": {
+      "yolo_world_model": "yolo_world/l"
+    },
+    "class_type": "Yoloworld_ModelLoader_Zho",
+    "_meta": {
+      "title": "🔎Yoloworld Model Loader"
+    }
+  },
+  "2": {
+    "inputs": {
+      "categories": "car",
+      "confidence_threshold": 0.23,
+      "iou_threshold": 0.16,
+      "box_thickness": 1,
+      "text_thickness": 1,
+      "text_scale": 0.8,
+      "with_confidence": true,
+      "with_class_agnostic_nms": true,
+      "with_segmentation": true,
+      "mask_combined": false,
+      "mask_extracted": false,
+      "mask_extracted_index": 7,
+      "yolo_world_model": [
+        "1",
+        0
+      ],
+      "esam_model": [
+        "3",
+        0
+      ],
+      "image": [
+        "4",
+        0
+      ]
+    },
+    "class_type": "Yoloworld_ESAM_Zho",
+    "_meta": {
+      "title": "🔎Yoloworld ESAM"
+    }
+  },
+  "3": {
+    "inputs": {
+      "device": "CUDA"
+    },
+    "class_type": "ESAM_ModelLoader_Zho",
+    "_meta": {
+      "title": "🔎ESAM Model Loader"
+    }
+  },
+  "4": {
+    "inputs": {
+      "image": "test (1).png",
+      "upload": "image"
+    },
+    "class_type": "LoadImage",
+    "_meta": {
+      "title": "Load Image"
+    }
+  },
+  "5": {
+    "inputs": {
+      "images": [
+        "2",
+        0
+      ]
+    },
+    "class_type": "PreviewImage",
+    "_meta": {
+      "title": "Preview Image"
+    }
+  },
+  "6": {
+    "inputs": {
+      "mask": [
+        "61",
+        0
+      ]
+    },
+    "class_type": "MaskToImage",
+    "_meta": {
+      "title": "Convert Mask to Image"
+    }
+  },
+  "7": {
+    "inputs": {
+      "images": [
+        "6",
+        0
+      ]
+    },
+    "class_type": "PreviewImage",
+    "_meta": {
+      "title": "Preview Image"
+    }
+  },
+  "25": {
+    "inputs": {
+      "text": "a road with the sunshine, ",
+      "clip": [
+        "28",
+        1
+      ]
+    },
+    "class_type": "CLIPTextEncode",
+    "_meta": {
+      "title": "CLIP Text Encode (Prompt)"
+    }
+  },
+  "26": {
+    "inputs": {
+      "text": "text, car",
+      "clip": [
+        "28",
+        1
+      ]
+    },
+    "class_type": "CLIPTextEncode",
+    "_meta": {
+      "title": "CLIP Text Encode (Prompt)"
+    }
+  },
+  "28": {
+    "inputs": {
+      "ckpt_name": "xxmix9realistic_v40.safetensors"
+    },
+    "class_type": "CheckpointLoaderSimple",
+    "_meta": {
+      "title": "Load Checkpoint"
+    }
+  },
+  "29": {
+    "inputs": {
+      "add_noise": "enable",
+      "noise_seed": 527123361300374,
+      "steps": 24,
+      "cfg": 8,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "ddim_uniform",
+      "start_at_step": 0,
+      "end_at_step": 10000,
+      "return_with_leftover_noise": "disable",
+      "model": [
+        "40",
+        0
+      ],
+      "positive": [
+        "25",
+        0
+      ],
+      "negative": [
+        "26",
+        0
+      ],
+      "latent_image": [
+        "45",
+        0
+      ]
+    },
+    "class_type": "KSamplerAdvanced",
+    "_meta": {
+      "title": "KSampler (Advanced)"
+    }
+  },
+  "30": {
+    "inputs": {
+      "image": [
+        "4",
+        0
+      ],
+      "mask": [
+        "61",
+        0
+      ]
+    },
+    "class_type": "InpaintPreprocessor",
+    "_meta": {
+      "title": "Inpaint Preprocessor"
+    }
+  },
+  "31": {
+    "inputs": {
+      "images": [
+        "30",
+        0
+      ]
+    },
+    "class_type": "PreviewImage",
+    "_meta": {
+      "title": "Preview Image"
+    }
+  },
+  "36": {
+    "inputs": {
+      "samples": [
+        "29",
+        0
+      ],
+      "vae": [
+        "28",
+        2
+      ]
+    },
+    "class_type": "VAEDecode",
+    "_meta": {
+      "title": "VAE Decode"
+    }
+  },
+  "37": {
+    "inputs": {
+      "images": [
+        "36",
+        0
+      ]
+    },
+    "class_type": "PreviewImage",
+    "_meta": {
+      "title": "Preview Image"
+    }
+  },
+  "39": {
+    "inputs": {
+      "head": "fooocus_inpaint_head.pth",
+      "patch": "inpaint_v26.fooocus.patch"
+    },
+    "class_type": "INPAINT_LoadFooocusInpaint",
+    "_meta": {
+      "title": "Load Fooocus Inpaint"
+    }
+  },
+  "40": {
+    "inputs": {
+      "model": [
+        "28",
+        0
+      ],
+      "patch": [
+        "39",
+        0
+      ],
+      "latent": [
+        "45",
+        0
+      ]
+    },
+    "class_type": "INPAINT_ApplyFooocusInpaint",
+    "_meta": {
+      "title": "Apply Fooocus Inpaint"
+    }
+  },
+  "45": {
+    "inputs": {
+      "grow_mask_by": 6,
+      "pixels": [
+        "4",
+        0
+      ],
+      "vae": [
+        "28",
+        2
+      ],
+      "mask": [
+        "61",
+        0
+      ]
+    },
+    "class_type": "VAEEncodeForInpaint",
+    "_meta": {
+      "title": "VAE Encode (for Inpainting)"
+    }
+  },
+  "46": {
+    "inputs": {
+      "scale": 0.5,
+      "blur_sigma": 2,
+      "model": [
+        "28",
+        0
+      ]
+    },
+    "class_type": "SelfAttentionGuidance",
+    "_meta": {
+      "title": "Self-Attention Guidance"
+    }
+  },
+  "47": {
+    "inputs": {
+      "model": [
+        "46",
+        0
+      ]
+    },
+    "class_type": "DifferentialDiffusion",
+    "_meta": {
+      "title": "Differential Diffusion"
+    }
+  },
+  "48": {
+    "inputs": {
+      "seed": 493009995371569,
+      "steps": 24,
+      "cfg": 8,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "ddim_uniform",
+      "denoise": 1,
+      "model": [
+        "47",
+        0
+      ],
+      "positive": [
+        "25",
+        0
+      ],
+      "negative": [
+        "26",
+        0
+      ],
+      "latent_image": [
+        "49",
+        0
+      ]
+    },
+    "class_type": "KSampler",
+    "_meta": {
+      "title": "KSampler"
+    }
+  },
+  "49": {
+    "inputs": {
+      "grow_mask_by": 6,
+      "pixels": [
+        "4",
+        0
+      ],
+      "vae": [
+        "28",
+        2
+      ],
+      "mask": [
+        "61",
+        0
+      ]
+    },
+    "class_type": "VAEEncodeForInpaint",
+    "_meta": {
+      "title": "VAE Encode (for Inpainting)"
+    }
+  },
+  "53": {
+    "inputs": {
+      "samples": [
+        "48",
+        0
+      ],
+      "vae": [
+        "28",
+        2
+      ]
+    },
+    "class_type": "VAEDecode",
+    "_meta": {
+      "title": "VAE Decode"
+    }
+  },
+  "54": {
+    "inputs": {
+      "images": [
+        "53",
+        0
+      ]
+    },
+    "class_type": "PreviewImage",
+    "_meta": {
+      "title": "Preview Image"
+    }
+  },
+  "55": {
+    "inputs": {
+      "positive": [
+        "25",
+        0
+      ],
+      "negative": [
+        "26",
+        0
+      ],
+      "vae": [
+        "28",
+        2
+      ],
+      "pixels": [
+        "4",
+        0
+      ],
+      "mask": [
+        "61",
+        0
+      ]
+    },
+    "class_type": "InpaintModelConditioning",
+    "_meta": {
+      "title": "InpaintModelConditioning"
+    }
+  },
+  "56": {
+    "inputs": {
+      "seed": 78025146222738,
+      "steps": 25,
+      "cfg": 8,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "ddim_uniform",
+      "denoise": 1,
+      "model": [
+        "28",
+        0
+      ],
+      "positive": [
+        "55",
+        0
+      ],
+      "negative": [
+        "55",
+        1
+      ],
+      "latent_image": [
+        "55",
+        2
+      ]
+    },
+    "class_type": "KSampler",
+    "_meta": {
+      "title": "KSampler"
+    }
+  },
+  "57": {
+    "inputs": {
+      "samples": [
+        "56",
+        0
+      ],
+      "vae": [
+        "28",
+        2
+      ]
+    },
+    "class_type": "VAEDecode",
+    "_meta": {
+      "title": "VAE Decode"
+    }
+  },
+  "58": {
+    "inputs": {
+      "images": [
+        "57",
+        0
+      ]
+    },
+    "class_type": "PreviewImage",
+    "_meta": {
+      "title": "Preview Image"
+    }
+  },
+  "61": {
+    "inputs": {
+      "expand": 43,
+      "tapered_corners": true,
+      "mask": [
+        "2",
+        1
+      ]
+    },
+    "class_type": "GrowMask",
+    "_meta": {
+      "title": "GrowMask"
+    }
+  }
+}
